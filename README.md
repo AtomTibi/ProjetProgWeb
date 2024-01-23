@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # kubernetes-minikube
 
 Minikube is a tool that lets you run Kubernetes locally. 
