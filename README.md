@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # kubernetes-minikube
 
 Minikube is a tool that lets you run Kubernetes locally. 
@@ -253,3 +254,7 @@ Create a second deployment and its service, then add a new route to the ingress.
 `kubectl delete deployment myservice`
 
 
+=======
+# ProjetProgWeb
+Projet de Programmation WEB | Master Cybersecurite UPC
+>>>>>>> 0c5681b85e44c0701314ee6abf1d8436a911c392
