@@ -1,6 +1,6 @@
 --  On crée la base de données, si elle n'existe pas
-CREATE DATABASE IF NOT EXISTS webproject;
-\c webproject
+-- CREATE DATABASE IF NOT EXISTS webproject;
+-- \c webproject
 
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS product_img;

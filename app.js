@@ -1,3 +1,7 @@
+// le point d'entrée de l'application Node.js. Ce fichier configure le serveur web (à l'aide d'Express), définit les routes, et démarre le serveur
+
+
+
 // Importation des modules nécessaires
 const express = require('express');
 const product = require('./public/javascript/products.js');
@@ -20,7 +24,16 @@ app.use(express.urlencoded({ extended: true }));
 
 // Récupération de la liste des produits
 let product_list = product.product_list;
-controller.initializeProducts();
+
+
+
+// Après la configuration d'Express et avant le démarrage du serveur
+controller.initializeProducts().then(() => {
+    console.log('Les produits ont été initialisés.');
+}).catch(error => {
+    console.error('Erreur lors de l\'initialisation des produits', error);
+});
+
 
 // Route pour obtenir la liste des produits
 app.get('/results', (req, res) => {

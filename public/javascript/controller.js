@@ -9,18 +9,18 @@ let combinaison_list = products.combinaison_list;
 let cart = cart_mod.cart;
 
 
-/**
- * Récupère les produits stocké dans la table product de la DB
- */
-async function getProductsfromDB(){  
-    const prod = await pool.query(queries.getProducts);
-        
-prod.rows.forEach(element => {
-    var t = products.Produit(element.id_product, element.product_name, element.product_type, element.price, element.sex, element.color);
-    product_list.push(t);
-});
 
- }
+ async function getProductsfromDB() {  
+    try {
+        const prod = await pool.query(queries.getProducts);
+        prod.rows.forEach(element => {
+            var t = products.Produit(element.id_product, element.product_name, element.product_type, element.price, element.sex, element.color);
+            product_list.push(t);
+        });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des produits', error);
+    }
+}
 
 
  async function getSingleProductfromDB(id){
@@ -257,12 +257,22 @@ async function deleteProdFromTheCart(id){
     return true;
 
 }
-async function initializeProducts(){
-    await getProductsfromDB();
-    await assignImagetoProd();
-    await getCombinaisonFromDB();
-    await getAccessoriesfromDB();
+
+
+async function initializeProducts() {
+    try {
+        await getProductsfromDB();
+        await assignImagetoProd();
+        await getCombinaisonFromDB();
+        await getAccessoriesfromDB();
+        console.log('Produits initialisés avec succès.');
+    } catch (error) {
+        console.error('Erreur lors de l\'initialisation des produits', error);
+        setTimeout(initializeProducts, 5000);  // 
+    }
 }
+
+
 
 
 module.exports = {
