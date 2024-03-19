@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="gerant.css">
+    <script src="jquery-3.6.4.js"></script>
+
+    <script src="/javascript/gerant.js"></script>
+
+
+    <title>Gérant - Vue des stocks et commandes</title>
+</head>
+<div class="container">
+    <h1>Gestion des stocks</h1>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Produit</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%  
+                product_list.forEach(element => {
+                    %>
+                <tr class = "product-stock" value ="<%=element.id%>">
+                
+                    <th scope="row"><%=element.id%></th>
+                    <td><%=element.nom%></td>
+                    <td class="stock-cell">
+                        XS: <span class="stock-value" data-size="XS"></span>
+                        S: <span class="stock-value" data-size="S"></span>
+                        M: <span class="stock-value" data-size="M"></span>
+                        L: <span class="stock-value" data-size="L"></span>
+                        XL: <span class="stock-value" data-size="XL"></span>
+                        XXL: <span class="stock-value" data-size="XXL"></span>
+                    </td>
+                    <td>
+                        <select class="size-select">
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                        <input type="number" class="quantity-input" value="1" min="1">
+                        <button name= "add" class="btn btn-success btn-sm add-stock-btn" value ="<%=element.id%>">+</button>
+                        <button name = "remove" class="btn btn-danger btn-sm remove-stock-btn" value ="<%=element.id%>">-</button>
+                    </td>
+                </tr>
+                <%})%>
+            </tbody>
+        </table>
+    </div>
+        <h1>Gestion des commandes</h1>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">Produits</th>
+                        <th scope="col">Adresse</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody class = "tableOrder">
+                    <tr>
+                    </tr>
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+   

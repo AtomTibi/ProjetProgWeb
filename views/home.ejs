@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/home.css">
+    <link rel="stylesheet" href="/stylesheets/popup.css">
+    <link rel="stylesheet" href="/stylesheets/combinaison.css">
+
+    <script src="jquery-3.6.4.js"></script>
+    <script src="/javascript/script.js"></script>
+    <script src="/javascript/script2.js"></script>
+
+
+    <title>Thrift - Friperie Solidaire</title>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-custom navbar-light bg-light navbar-custom">
+
+            <div class="container">
+                <h1 id="titre">THRIFT</h1>
+                <a class="navbar-brand" href="#"></a>
+                <div class="d-flex">
+                    <!-- Bouton Connexion -->
+                    <div class="connection-btn">
+                        <img src="/ressources/images/vetements/bonhomme.png" alt="Connection" />
+                    </div>
+                    <div class="connexion" id="connexion" style="display: none;">
+                        <button id="closeConnexion" type="button" style="float: right;">&times;</button>
+                        <div class="connexion-tabs">
+                            <button class="connexion-tab connexion-tab-active" id="connexionTab">Connexion</button>
+                            <button class="connexion-tab" id="inscriptionTab">Inscription</button>
+                        </div>
+                        <div class="connexion-content">
+                            <div class="connexion-pane connexion-pane-active" id="connexionPane">
+                                <h3>Connexion</h3>
+                                <form id="connexionForm">
+                                    <div class="form-group">
+                                        <label for="connexionEmail">Email:</label>
+                                        <input type="email" class="form-control" id="connexionEmail" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="connexionPassword">Mot de passe:</label>
+                                        <input type="password" class="form-control" id="connexionPassword" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                                </form>
+                            </div>
+                            <div class="connexion-pane" id="inscriptionPane">
+                                <h3>Inscription</h3>
+                                <form id="inscriptionForm">
+                                    <div class="form-group">
+                                        <label for="nom">Nom:</label>
+                                        <input type="text" class="form-control" id="nom" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prenom">Prénom:</label>
+                                        <input type="text" class="form-control" id="prenom" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="adresse">Adresse:</label>
+                                        <input type="text" class="form-control" id="adresse" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="telephone">Téléphone:</label>
+                                        <input type="tel" class="form-control" id="telephone" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Mot de passe:</label>
+                                        <input type="password" class="form-control" id="password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="passwordConfirmation">Confirmer le mot de passe:</label>
+                                        <input type="password" class="form-control" id="passwordConfirmation" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">S'inscrire</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panier-btn">
+                        <img src="/ressources/images/vetements/panier.png" alt="Panier" />
+                    </div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">FEMME</a>
+                            <div class="dropdown-banner femme-banner">
+                                <div class="container">
+                                    <a href="#" data-category="Jupe">Jupe</a>
+                                    <a href="#" data-category="Pantalon">Pantalon</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">HOMME</a>
+                            <div class="dropdown-banner homme-banner">
+                                <div class="container">
+                                    <a href="#" data-category="Manche Longue">Manche Longue</a>
+                                    <a href="#" data-category="Pull">Pull</a>
+                                    <a href="#" data-category="Veste">Veste</a>
+                                    <a href="#" data-category="Jean">Jean</a>
+                                    <a href="#" data-category="Chemise">Chemise</a>
+
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="combinaisonbutton" href="#">COMBINAISONS</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </nav>
+
+        <div class="panier-banner">
+            <div class="panier-items">
+            </div>
+            <div class="total-amount">Total : <span id="totalAmount">0</span> €</div>
+            <button type="button" class="btn btn-primary" id="BtnFinaliser">Finaliser commande</button>
+        </div>
+        <div class="modal-form" id="finaliserCommandeModal">
+            <div class="modal-content">
+                <h2>Finaliser la commande</h2>
+                <form id="finaliserCommandeForm">
+                    <div class="form-group">
+                        <label for="nom">Nom:</label>
+                        <input type="text" class="form-control" id="nom" name="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prenom">Prénom:</label>
+                        <input type="text" class="form-control" id="prenom" name="prenom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adresse">Adresse:</label>
+                        <input type="text" class="form-control" id="adresse" name="adresse" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone">Téléphone:</label>
+                        <input type="tel" class="form-control" id="telephone" name="telephone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="heureLivraison">Heure de livraison souhaitée:</label>
+                        <input type="time" class="form-control" id="heureLivraison" name="heureLivraison" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                    <button type="button" class="btn btn-secondary" id="closeModal">Fermer</button>
+                </form>
+            </div>
+        </div>
+    
+
+    </header>
+
+    <main class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="filters">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle mb-2" type="button" id="categoryDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Catégorie
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="categoriemenu">
+                            <li><a class="dropdown-item" href="#" data-value="Tout">Tout</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Pull">Pull</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Jupe">Jupe</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Manche Longue">Manche Longue</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Veste">Veste</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Jean">Jean</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Pantalon">Pantalon</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle mb-2" type="button" id="colorDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Couleur
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="colorDropdown" id="colormenu">
+                            <li><a class="dropdown-item" href="#" data-value="Tout">Tout</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Rouge">Rouge</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Bleu">Bleu</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Noir">Noir</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Blanc">Blanc</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Beige">Beige</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Gris">Gris</a></li>
+                            <li><a class="dropdown-item" href="#" data-value="Violet">Violet</a></li>
+                        </ul>
+                    </div>
+                   
+                </div>
+                <!-- Ajoutez d'autres options si nécessaire -->
+            </div>
+            <div class="col-md-10">
+                <div class="products-container">
+                    <div class="row" id="rowproducts">
+                        <% product_list.forEach(element=> { %>
+                            <div class="col-md-6 col-lg-3 mb-4">
+                                <% console.log("Product type: " + element.type); %>
+                            <div id=" product<%=element.id %>" class="product" data-value="" data-nom="<%=element.nom
+                                        %>" data-color="<%=element.color%>" data-price="<%= element.price%>" data-type="
+                                                <%= element.type %>">
+
+                                                    <img src=<%=element.url %>>
+                                                    <div class="product-info">
+                                                        <h6><em>
+                                                                <%= (element.nom).toUpperCase()%>
+                                                            </em></h6>
+                                                        <h6><b>
+                                                                <%= element.prix%>$
+                                                            </b></h6>
+
+                                                        <div>
+
+                                                        </div>
+                                                        <div class="size-container">
+                                                            <button class="size-button" data-size="XS"
+                                                                data-stock="2">XS</button>
+                                                            <button class="size-button" data-size="S"
+                                                                data-stock="2">S</button>
+                                                            <button class="size-button" data-size="M"
+                                                                data-stock="0">M</button>
+                                                            <button class="size-button" data-size="L"
+                                                                data-stock="0">L</button>
+                                                            <button class="size-button" data-size="XL"
+                                                                data-stock="3">XL</button>
+                                                            <button class="size-button" data-size="XXL"
+                                                                data-stock="3">XXL</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="accessory" data-nom="Casquette"
+                                                        data-category="Accessoire" data-color="Noir" data-price="10">
+                                                        <select class="accessories-dropdown">
+
+                                                            <option value=" ">Sélectionnez un accessoire</option>
+                                                            <% element.accessoryList.forEach(element2=>{
+                                                                %>
+                                                                <option value="<%= JSON.stringify(element) %>"
+                                                                    data-prod="<%=element.id%>" )>
+                                                                    <%=element2.nom %>
+                                                                </option>
+                                                                <% })%>
+                                                        </select>
+                                                        <button class="accessories-button">Ajouter l'accessoire au
+                                                            panier</button>
+                                                    </div>
+                            </div>
+                    </div>
+                    <% }) %>
+
+                </div>
+
+            </div>
+        </div>
+        </div>
+
+
+    </main>
+
+    <div class="footer">
+        <div class="social-icons">
+            <a href="https://www.facebook.com/" target="_blank">
+                <img src="/ressources/images/vetements/facebook.png" alt="Facebook" />
+            </a>
+            <a href="https://twitter.com/" target="_blank">
+                <img src="/ressources/images/vetements/twitter.png" alt="Twitter" />
+            </a>
+            <a href="https://www.instagram.com/" target="_blank">
+                <img src="/ressources/images/vetements/instagram.png" alt="Instagram" />
+            </a>
+            <a href="https://www.tiktok.com/" target="_blank">
+                <img src="/ressources/images/vetements/tiktok.png" alt="TikTok" />
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
