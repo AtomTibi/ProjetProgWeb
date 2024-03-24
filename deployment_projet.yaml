@@ -21,19 +21,13 @@ spec:
         - containerPort: 3000
         env:
         - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: postgres-user
+          value: "postgres"
         - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: postgres-password
+          value: "thib"
         - name: POSTGRES_HOST
-          value: db
+          value: "postgres-service"
         - name: POSTGRES_DB
-          value: webproject
+          value: "webproject"
         - name: POSTGRES_PORT
           value: "5432"
 ---
