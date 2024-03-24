@@ -1,0 +1,94 @@
+apiVersion: v1
+data:
+  init.sql: "--  On crée la base de données, si elle n'existe pas\n-- CREATE DATABASE
+    IF NOT EXISTS webproject;\n-- \\c webproject\n\nDROP TABLE IF EXISTS products;\nDROP
+    TABLE IF EXISTS product_img;\nDROP TABLE IF EXISTS accessoires;\nDROP TABLE IF
+    EXISTS combinaison;\nDROP TABLE IF EXISTS orders;\nDROP TABLE IF EXISTS ordersproducts;\nDROP
+    TABLE IF EXISTS stock;\nDROP TABLE IF EXISTS cart;\nDROP TABLE IF EXISTS users;\n\n\nCREATE
+    TABLE IF NOT EXISTS users (\n    id  SERIAL,\n    email VARCHAR(255) NOT NULL,\n
+    \   password VARCHAR(255) NOT NULL\n);\n\nINSERT INTO users (email, password)\nVALUES
+    ('root@gmail.com', 'root');\n\n\nCREATE TABLE IF NOT EXISTS public.cart\n(\n    id_cart
+    SERIAL,\n    id_prod integer NOT NULL,\n    id_accessoire integer,\n    taille
+    text\n\n);\n\nCREATE TABLE IF NOT EXISTS products\n(\n    id_product integer NOT
+    NULL,\n    product_name text NOT NULL,\n    product_type text NOT NULL,\n    sex
+    \"char\",\n    color text ,\n    price integer NOT NULL DEFAULT 0,\n    CONSTRAINT
+    products_pkey PRIMARY KEY (id_product)\n);\n\n\nINSERT INTO products(\n    id_product,
+    product_name, product_type, sex, color, price)\nVALUES \n    (1, 'T-shirt Gris
+    Homme', 'Manche Longue', 'M','Gris', 25),\n    (2, 'Col Roulé Rouge Burberry',
+    'Pull', 'M', 'Rouge', 15),\n    (3, 'Jean Bleu Homme', 'Jean', 'M', 'Bleu', 30),\n
+    \   (4, 'Jean Gris Homme', 'Jean', 'M', 'Gris', 25),\n    (5, 'Jupe Longue Violette',
+    'Jupe', 'F','Violet', 25),\n    (6, 'Chemise Blanche Homme', 'Chemise', 'M','Blanc',
+    40),\n    (7, 'Chemise Beige Homme', 'Chemise', 'M','Beige', 25),\n    (8, 'Chemise
+    Oxford Blanche', 'Chemise', 'M','Blanc', 25),\n    (9, 'Sweat Noir Homme', 'Pull',
+    'M','Noir', 55),\n    (10, 'Pantalon Comfort Bleu', 'Pantalon', 'M','Bleu', 40),\n
+    \   (11, 'Veste Habillée Grise', 'Veste', 'M','Gris', 70),\n    (12, 'Veste Ajustée
+    Grise', 'Veste', 'M','Gris', 70),\n    (13, 'Pantalon Smart Gris', 'Pantalon',
+    'M','Gris', 40),\n    (14, 'Pull Blanc', 'Pull', 'M','Gris', 40),\n    (15, 'Robe
+    Evasee', 'Robe', 'F','Noir', 40),\n    (16, 'Sweat Capuche Rouge', 'Panta', 'M','Gris',
+    40);\n\n\n\n\nCREATE TABLE IF NOT EXISTS product_img\n(\n    id_product integer
+    NOT NULL,\n    url text NOT NULL,\n    CONSTRAINT product_img_pkey PRIMARY KEY
+    (id_product)\n);\n\nINSERT INTO product_img(\n\tid_product, url)\n\tVALUES (1,
+    'ressources/images/vetements/longue-gris.png'),\n\t(2, '/ressources/images/vetements/col-roule.png'),\n\t(3,
+    '/ressources/images/vetements/jean.png'),\n\t(4, '/ressources/images/vetements/jeangris.png'),\n\t(5,
+    'ressources/images/vetements/jupe.png'),\n    (6, 'ressources/images/vetements/chemise.png'),\n\t(7,
+    'ressources/images/vetements/chemisecarreaux.png'),\n\t(8, 'ressources/images/vetements/chemiseoxford.png'),\n
+    \   (9, 'ressources/images/vetements/sweatnoir.png'),\n    (10, 'ressources/images/vetements/pantaloncomfort.png'),\n
+    \   (11, 'ressources/images/vetements/vestecomfort.png'),\n    (12, 'ressources/images/vetements/vesteajustee.png'),\n
+    \   (13, 'ressources/images/vetements/pantalonsmart.png'),\n    (14, 'ressources/images/vetements/pullblanc.png'),\n
+    \   (15, 'ressources/images/vetements/robeevasee.png'),\n    (16, 'ressources/images/vetements/sweatcapucherouge.png');\n\n\n\nCREATE
+    TABLE IF NOT EXISTS public.accessoires\n(\n    id integer NOT NULL,\n    nom text
+    COLLATE pg_catalog.\"default\",\n    prix integer,\n    url text COLLATE pg_catalog.\"default\",\n
+    \   id_produit integer,\n    CONSTRAINT \"Accessoire_pkey\" PRIMARY KEY (id)\n);\n\nCREATE
+    TABLE IF NOT EXISTS public.combinaison\n(\n    id_produit1 integer NOT NULL,\n
+    \   id_produit2 integer NOT NULL,\n    type text COLLATE pg_catalog.\"default\",\n
+    \   id_produit3 integer,\n    nom text COLLATE pg_catalog.\"default\",\n    sexe
+    \"char\",\n    CONSTRAINT \"Combinaison_pkey\" PRIMARY KEY (id_produit1, id_produit2)\n);\n\n\nINSERT
+    INTO public.combinaison (id_produit1, id_produit2, type, id_produit3, nom, sexe)\nSELECT
+    id_produit1, id_produit2, type, id_produit3, nom, sexe\nFROM (VALUES\n    (1,
+    3, 'Comfort', NULL, NULL, NULL),\n    (9, 4, 'Comfort', NULL, NULL, NULL),\n    (1,
+    5, 'Comfort', NULL, NULL, NULL),\n    (11, 7, 'Business', 10, NULL, NULL),\n    (12,
+    6, 'Business', 10, NULL, NULL),\n    (12, 8, 'Business', 13, NULL, NULL)\n) AS
+    data(id_produit1, id_produit2, type, id_produit3, nom, sexe);\n\n\n\nCREATE TABLE
+    IF NOT EXISTS public.orders\n(\n    id_command integer NOT NULL,\n    adresse
+    text COLLATE pg_catalog.\"default\" NOT NULL,\n    nom text COLLATE pg_catalog.\"default\"
+    NOT NULL,\n    prenom text COLLATE pg_catalog.\"default\" NOT NULL,\n    mail
+    text COLLATE pg_catalog.\"default\" NOT NULL,\n    tel text COLLATE pg_catalog.\"default\"
+    NOT NULL,\n    horaire text COLLATE pg_catalog.\"default\" NOT NULL,\n    montant
+    integer NOT NULL DEFAULT 0,\n    CONSTRAINT orders_pkey PRIMARY KEY (id_command)\n);\nINSERT
+    INTO public.orders(\n\tid_command, adresse, nom, prenom, mail, tel, horaire, montant)\n\tVALUES
+    (612, '1 Rue de la Paix, 75000 Paris', 'Dupont', 'Jean', 'jean.dupont@free.fr',
+    '0213338833', '12:16', 55),\n    (625, '12 rue Dubois, 75012 Paris', 'Dubois',
+    'Marianne', 'marianne.dubois@free.fr', '023456648833', '10:16', 50);\nCREATE TABLE
+    IF NOT EXISTS ordersproducts\n(\n    id_commande integer NOT NULL,\n    id integer
+    NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE
+    2147483647 CACHE 1 ),\n    taille text COLLATE pg_catalog.\"default\" NOT NULL,\n
+    \   id_produit integer NOT NULL,\n    CONSTRAINT ordersproducts_pkey PRIMARY KEY
+    (id)\n);\n\nINSERT INTO public.ordersproducts(\n\tid_commande, taille, id_produit)\n\tVALUES
+    (625,  'S', 1),\n    (625, 'XS', 4),\n    (612, 'XS', 5);\n\nCREATE TABLE IF NOT
+    EXISTS public.stock\n(\n    id_produit integer NOT NULL,\n    xs integer,\n    s
+    integer,\n    m integer,\n    l integer,\n    xl integer,\n    xxl integer,\n
+    \   CONSTRAINT \"Stock_pkey\" PRIMARY KEY (id_produit)\n);\n\nINSERT INTO public.stock(\n\tid_produit,
+    xs, s, m, l, xl, xxl)\n\tVALUES (1, 5, 5, 5, 5, 5, 5),\n    (2, 5, 5, 5, 5, 5,
+    5),\n    (3, 5, 5, 5, 5, 5, 5),\n    (4, 5, 5, 5, 5, 5, 5),\n    (5, 5, 5, 5,
+    5, 5, 5),\n    (6, 5, 5, 5, 5, 5, 5),\n    (7, 5, 5, 5, 5, 5, 5),\n    (8, 5,
+    5, 5, 5, 5, 5),\n    (9, 5, 5, 5, 5, 5, 5),\n    (10, 5, 5, 5, 5, 5, 5),\n    (11,
+    5, 5, 5, 5, 5, 5),\n    (12, 5, 5, 5, 5, 5, 5),\n    (13, 5, 5, 5, 5, 5, 5),\n
+    \   (14, 5, 5, 5, 5, 5, 5),\n    (15, 5, 5, 5, 5, 5, 5),\n    (16, 5, 5, 5, 5,
+    5, 5);\n"
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-03-19T14:35:13Z"
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:data:
+        .: {}
+        f:init.sql: {}
+    manager: kubectl-create
+    operation: Update
+    time: "2024-03-19T14:35:13Z"
+  name: init-db-script
+  namespace: default
+  resourceVersion: "3306"
+  uid: 67de4a29-3b77-42a6-9bf8-1382682f6aa5
