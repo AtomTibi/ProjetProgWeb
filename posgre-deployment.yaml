@@ -1,50 +1,50 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1                # Version de l'API utilisée pour créer un déploiement.
+kind: Deployment                   # Type de ressource à créer, ici un déploiement.
 metadata:
-  name: postgres
+  name: postgres                   # Nom du déploiement. Utilisé pour identifier la ressource dans le cluster.
   labels:
-    app: postgres
+    app: postgres                  # Étiquette pour identifier toutes les ressources associées à cette instance de PostgreSQL.
 spec:
-  replicas: 1
+  replicas: 1                      # Nombre de pods à maintenir. Ici, un seul pod est créé pour PostgreSQL.
   selector:
     matchLabels:
-      app: postgres
-  template:
+      app: postgres                # Sélecteur utilisé pour identifier les pods qui appartiennent à ce déploiement.
+  template:                        # Template pour les pods du déploiement.
     metadata:
       labels:
-        app: postgres
+        app: postgres              # Étiquettes appliquées aux pods. Doit correspondre au sélecteur du déploiement.
     spec:
       containers:
-      - name: postgres
-        image: postgres:latest
+      - name: postgres             # Nom du conteneur dans le pod.
+        image: postgres:latest     # Image Docker à utiliser pour le conteneur, ici la dernière version de PostgreSQL.
         ports:
-        - containerPort: 5432
-        env:
+        - containerPort: 5432      # Port sur lequel le conteneur accepte le trafic pour PostgreSQL.
+        env:                       # Variables d'environnement passées au conteneur.
         - name: POSTGRES_USER
-          value: "postgres"
+          value: "postgres"        # Nom d'utilisateur pour la base de données.
         - name: POSTGRES_PASSWORD
-          value: "thib"
+          value: "thib"            # Mot de passe pour l'accès à la base de données.
         - name: POSTGRES_DB
-          value: "webproject"
+          value: "webproject"      # Nom de la base de données principale à créer au démarrage.
         - name: PGDATA
-          value: "/var/lib/postgresql/data/pgdata"
-        volumeMounts:
+          value: "/var/lib/postgresql/data/pgdata"  # Chemin du dossier où les données de la base de données seront stockées dans le conteneur.
+        volumeMounts:              # Montage de volumes pour le conteneur.
         - name: init-script
-          mountPath: /docker-entrypoint-initdb.d
-      volumes:
+          mountPath: /docker-entrypoint-initdb.d  # Chemin où les scripts d'initialisation de la base de données seront montés et exécutés au démarrage.
+      volumes:                     # Définition des volumes utilisés dans ce déploiement.
       - name: init-script
         configMap:
-          name: init-db-script
+          name: init-db-script     # ConfigMap contenant les scripts d'initialisation de la base de données.
 ---
-apiVersion: v1
-kind: Service
+apiVersion: v1                     # Version de l'API utilisée pour créer un service.
+kind: Service                      # Type de ressource créée, ici un service.
 metadata:
-  name: postgres-service
+  name: postgres-service           # Nom du service. Utilisé pour identifier la ressource.
 spec:
   selector:
-    app: postgres
-  type: ClusterIP
+    app: postgres                  # Sélecteur utilisé pour identifier les pods que le service doit cibler.
+  type: ClusterIP                  # Type de service, ClusterIP rend le service accessible seulement à l'intérieur du cluster.
   ports:
     - protocol: TCP
-      port: 5432
-      targetPort: 5432
+      port: 5432                   # Port sur lequel le service est exposé au sein du cluster.
+      targetPort: 5432             # Port du pod auquel le trafic doit être envoyé.

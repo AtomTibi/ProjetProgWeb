@@ -1,45 +1,45 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1                # Version de l'API utilisée pour créer un déploiement.
+kind: Deployment                   # Type de ressource à créer.
 metadata:
-  name: node
-  labels:
-    app: node
+  name: node                       # Nom du déploiement. Utilisé pour identifier la ressource.
+  labels:                          
+    app: node                      # Étiquette pour identifier toutes les ressources associées à cette application.
 spec:
-  replicas: 1
+  replicas: 1                      # Nombre de pods à maintenir. Ici, un seul pod est créé.
   selector:
     matchLabels:
-      app: node
-  template:
+      app: node                    # Sélecteur utilisé pour identifier les pods qui appartiennent à ce déploiement.
+  template:                        # Template pour les pods du déploiement.
     metadata:
       labels:
-        app: node
+        app: node                  # Étiquettes appliquées aux pods. Doit correspondre au sélecteur du déploiement.
     spec:
       containers:
-      - name: node
-        image: atomtibi/mon-application:latest
+      - name: node                 # Nom du conteneur dans le pod.
+        image: atomtibi/mon-application:latest  # Image Docker à utiliser pour le conteneur.
         ports:
-        - containerPort: 3000
-        env:
+        - containerPort: 3000      # Port sur lequel le conteneur accepte le trafic.
+        env:                       # Variables d'environnement passées au conteneur.
         - name: POSTGRES_USER
-          value: "postgres"
+          value: "postgres"        # Nom d'utilisateur pour la connexion à la base de données PostgreSQL.
         - name: POSTGRES_PASSWORD
-          value: "thib"
+          value: "thib"            # Mot de passe pour la connexion à la base de données.
         - name: POSTGRES_HOST
-          value: "postgres-service"
+          value: "postgres-service"# Nom du service Kubernetes pour la base de données PostgreSQL.
         - name: POSTGRES_DB
-          value: "webproject"
+          value: "webproject"      # Nom de la base de données à utiliser.
         - name: POSTGRES_PORT
-          value: "5432"
+          value: "5432"            # Port utilisé pour se connecter à la base de données PostgreSQL.
 ---
-apiVersion: v1
-kind: Service
+apiVersion: v1                     # Version de l'API utilisée pour créer un service.
+kind: Service                      # Type de ressource créée.
 metadata:
-  name: node-service
+  name: node-service               # Nom du service. Utilisé pour identifier la ressource.
 spec:
   selector:
-    app: node
-  type: LoadBalancer
+    app: node                      # Sélecteur utilisé pour identifier les pods que le service doit cibler.
+  type: LoadBalancer               # Type de service, LoadBalancer expose le service à l'extérieur du cluster.
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 3000                   # Port sur lequel le service est exposé.
+      targetPort: 3000             # Port du pod auquel le trafic doit être envoyé.

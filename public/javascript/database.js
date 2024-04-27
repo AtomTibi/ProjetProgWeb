@@ -1,22 +1,3 @@
-
-//AVANT UTILISATION DOCKER
-// const pg = require('pg');
-// const pool = new pg.Pool({
-//     user: "atomtibi",
-//     host: 'localhost',
-//     database: 'webproject',
-//     password: 'thib', // Aucun mot de passe
-//     port: 5432
-// });
-
-// pool.connect();
-
-// module.exports = pool;
-
-
-//AVEC UTILISATION DOCKER
-
-
 const pg = require('pg');
 
 const pool = new pg.Pool({
